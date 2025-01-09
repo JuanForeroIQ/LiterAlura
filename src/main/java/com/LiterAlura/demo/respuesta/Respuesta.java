@@ -1,5 +1,9 @@
 package com.LiterAlura.demo.respuesta;
 
+import com.LiterAlura.demo.principal.Principal;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -24,4 +28,6 @@ public class Respuesta {
             return "Error: " + e.getMessage();  // Retorna el mensaje de error en caso de excepción
         }
     }
+
+
 }
