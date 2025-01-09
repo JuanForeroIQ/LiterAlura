@@ -2,6 +2,7 @@ package com.LiterAlura.demo.principal;
 
 import com.LiterAlura.demo.cliente.Cliente;
 import com.LiterAlura.demo.modelo.Libro;
+import com.LiterAlura.demo.modelo.ListaAutores;
 import com.LiterAlura.demo.procesador.Procesador;
 import com.LiterAlura.demo.respuesta.Respuesta;
 import com.LiterAlura.demo.solicitud.Solicitud;
@@ -9,13 +10,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Scanner;
+import com.LiterAlura.demo.modelo.ListaLibro;
 
 @Service
 public class Principal {
 
+    private ListaLibro listaLibro = new ListaLibro();
+    private ListaAutores listaAutores = new ListaAutores();
+
     public String busquedaLibros() {
 
-        Scanner myObj = new Scanner(System.in);  // Crear objeto Scanner para leer la entrada
+        Scanner myObj = new Scanner(System.in);
         System.out.println("Elija la opción a través de su número: \n" +
                 "1- Buscar libro por título.\n" +
                 "2- Listar libros registrados.\n" +
@@ -25,58 +30,82 @@ public class Principal {
                 "0- Salir.\n");
 
         int consulta;
-
-        // Asegurarse de que el usuario ingrese un número válido
         while (!myObj.hasNextInt()) {
 
             System.out.println("Por favor, ingrese un número válido.");
-            myObj.next(); // Descarta la entrada incorrecta
+            myObj.next();
 
         }
 
-        consulta = myObj.nextInt();  // Leer entrada del usuario
-
-        // Consumir la línea pendiente
-        myObj.nextLine();
+        consulta = myObj.nextInt();
+        myObj.nextLine();  // Consumir la línea pendiente
 
         switch (consulta) {
 
             case 1:
 
-                System.out.print("Ingrese el autor: ");
-                String autor = myObj.nextLine();  // Leer el autor
                 System.out.print("Ingrese el título del libro: ");
-                String libro = myObj.nextLine();  // Leer el título del libro
-                String enlace = "search=" + autor + "%20" + libro;
+                String libro = myObj.nextLine().replace(" ", "%20");
+                String enlace = "search=" + libro;
 
                 var cliente = Cliente.getClient();
                 var solicitud = Solicitud.crearSolicitudBusqueda(enlace);
-
-                // Obtener la respuesta de la búsqueda (Ahora es un String)
                 String respuesta = Respuesta.procesoRespuesta(cliente, solicitud);
-
-                // Crea una instancia de ProcesadorLibros
                 Procesador procesador = new Procesador();
-
-                // Procesar la respuesta JSON y obtener la lista de libros
                 List<Libro> libros = procesador.procesarJson(respuesta);
 
-                // Verificar si se obtuvieron libros
                 if (libros.isEmpty()) {
                     System.out.println("No se encontraron libros.");
                     return "No se encontraron libros.";
                 }
 
-                // Imprimir los libros encontrados
                 for (Libro l : libros) {
+                    // Aquí agregamos el libro a la lista
+                    listaLibro.agregarLibro(l.getTitle(), l.getAuthors().get(0).getName(), l.getLanguages().get(0), l.getDownloadCount());
+                    listaAutores.agregarAutor(l.getAuthors().get(0).getName(), l.getAuthors().get(0).getBirthYear(), l.getAuthors().get(0).getDeathYear());
                     System.out.println(l);
+                    break;
                 }
 
                 return "1";
 
             case 2:
 
+                List<ListaLibro.LibroInfo> librosRegistrados = listaLibro.obtenerLibros();
+
+                if (librosRegistrados.isEmpty()) {
+
+                    System.out.println("No hay libros registrados.");
+
+                } else {
+
+                    for (ListaLibro.LibroInfo libroInfo : librosRegistrados) {
+                        System.out.println(libroInfo);
+                        System.out.println("\n");
+                    }
+
+                }
+
                 return "2";
+
+            case 3:
+
+                List<ListaAutores.AutorInfo> autoresRegistrados = listaAutores.obtenerAutores();
+
+                if (autoresRegistrados.isEmpty()) {
+
+                    System.out.println("No hay autores registrados.");
+
+                } else {
+
+                    for (ListaAutores.AutorInfo autorInfo : autoresRegistrados) {
+                        System.out.println(autorInfo);
+                        System.out.println("\n");
+                    }
+
+                }
+
+                return "3";
 
             case 0:
 

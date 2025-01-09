@@ -41,8 +41,8 @@ public class Autor {
 
     @Override
     public String toString() {
-        return "name='" + name + '\'' +
-                ", birthYear=" + birthYear +
-                ", deathYear=" + deathYear;
+        return "Autor='" + name + '\'' +
+                ", Año de Nacimiento=" + birthYear +
+                ", Año de Fallecimiento=" + deathYear;
     }
 }

@@ -16,6 +16,9 @@ public class Libro {
     @JsonAlias("download_count")
     private int downloadCount;
 
+    // Añadir el campo languages
+    private List<String> languages;
+
     // Getters y Setters
     public int getId() {
         return id;
@@ -49,14 +52,31 @@ public class Libro {
         this.downloadCount = downloadCount;
     }
 
+    // Getter y Setter para languages
+    public List<String> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(List<String> languages) {
+        this.languages = languages;
+    }
+
     @Override
     public String toString() {
+        // Modificado para imprimir los detalles de los autores fuera de los corchetes
+        StringBuilder authorsStr = new StringBuilder();
+        for (Autor autor : authors) {
+            authorsStr.append(autor.toString()).append(" ");  // Añadir detalles de autores
+        }
+
+        // Extraer el primer lenguaje
+        String language = languages != null && !languages.isEmpty() ? languages.get(0) : "Desconocido";
+
         return "Libro - {" +
-                "Title='" + title + "\', " +
-                "id=" + id + ", " +
-                authors +
-                ", downloadCount=" + downloadCount +
-                '}'
-                ;
+                "Titulo='" + title + "\', " +
+                "Idiomas=" + language + ", " +
+                authorsStr.toString() +
+                ", No.Descargas=" + downloadCount +
+                '}' + "\n";
     }
 }
