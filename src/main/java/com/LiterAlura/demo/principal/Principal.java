@@ -107,6 +107,32 @@ public class Principal {
 
                 return "3";
 
+            case 4:
+
+                // Pedir al usuario que ingrese un año específico
+                System.out.print("Ingrese el año para verificar los autores vivos en ese año: ");
+                int ano = myObj.nextInt();
+
+                // Obtener la lista de autores vivos en el año ingresado
+                List<ListaAutores.AutorInfo> autoresVivos = listaAutores.obtenerAutoresVivosEnAno(ano);
+
+                if (autoresVivos.isEmpty()) {
+
+                    System.out.println("No hay autores vivos en ese año.");
+
+                } else {
+
+                    System.out.println("Autores vivos en el año " + ano + ":");
+
+                    for (ListaAutores.AutorInfo autor : autoresVivos) {
+                        System.out.println(autor);
+                        System.out.println("\n");
+                    }
+
+                }
+
+                return "4";
+
             case 0:
 
                 System.out.println("Saliendo del programa...");
