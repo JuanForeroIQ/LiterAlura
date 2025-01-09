@@ -5,7 +5,7 @@ import java.net.http.HttpRequest;
 
 public class Solicitud {
 
-    private static final String URL = "https://gutendex.com/books?ids=";
+    private static final String URL = "https://gutendex.com/books/?";
 
     public static HttpRequest crearSolicitudBusqueda (String consulta) {
 

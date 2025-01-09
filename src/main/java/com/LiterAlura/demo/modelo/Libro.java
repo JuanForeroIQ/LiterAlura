@@ -51,11 +51,12 @@ public class Libro {
 
     @Override
     public String toString() {
-        return "Libro{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", authors=" + authors +
+        return "Libro - {" +
+                "Title='" + title + "\', " +
+                "id=" + id + ", " +
+                authors +
                 ", downloadCount=" + downloadCount +
-                '}';
+                '}'
+                ;
     }
 }
