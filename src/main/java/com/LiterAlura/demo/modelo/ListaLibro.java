@@ -12,7 +12,7 @@ public class ListaLibro {
     public static class LibroInfo {
         private String titulo;
         private String autor;
-        private String idioma;
+        public String idioma;
         private int numDescargas;
 
         public LibroInfo(String titulo, String autor, String idioma, int numDescargas) {

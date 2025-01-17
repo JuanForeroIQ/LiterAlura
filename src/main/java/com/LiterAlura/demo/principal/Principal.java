@@ -8,8 +8,8 @@ import com.LiterAlura.demo.respuesta.Respuesta;
 import com.LiterAlura.demo.solicitud.Solicitud;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+
 import com.LiterAlura.demo.modelo.ListaLibro;
 
 @Service
@@ -132,6 +132,35 @@ public class Principal {
                 }
 
                 return "4";
+
+            case 5:
+                // Obtener la lista de libros registrados
+                List<ListaLibro.LibroInfo> librosPorIdiomaRegistrados = listaLibro.obtenerLibros();
+
+                // Crear un mapa para almacenar los libros agrupados por idioma
+                Map<String, List<ListaLibro.LibroInfo>> librosPorIdioma = new HashMap<>();
+
+                // Agrupar los libros por idioma
+                for (ListaLibro.LibroInfo libroInfo : librosPorIdiomaRegistrados) {
+                    String idioma = libroInfo.idioma;
+                    librosPorIdioma.computeIfAbsent(idioma, k -> new ArrayList<>()).add(libroInfo);
+                }
+
+                // Verificar si hay libros registrados
+                if (librosPorIdiomaRegistrados.isEmpty()) {
+                    System.out.println("No hay libros registrados.");
+                } else {
+                    // Imprimir los libros agrupados por idioma
+                    for (Map.Entry<String, List<ListaLibro.LibroInfo>> entry : librosPorIdioma.entrySet()) {
+                        System.out.println("Idioma: " + entry.getKey());
+                        for (ListaLibro.LibroInfo libroInfo : entry.getValue()) {
+                            System.out.println(libroInfo);
+                            System.out.println("\n");
+                        }
+                    }
+                }
+
+                return "5";
 
             case 0:
 

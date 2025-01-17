@@ -21,6 +21,7 @@ public class LiterAluraApplication {
 
 			// Cambiar la comparación para comparar el contenido de las cadenas
 			while (!respuesta.equals("0")) {
+
 				respuesta = principal.busquedaLibros();
 			}
 
