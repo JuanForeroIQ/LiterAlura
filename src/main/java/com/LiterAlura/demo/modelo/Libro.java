@@ -2,29 +2,41 @@ package com.LiterAlura.demo.modelo;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
+@Table(name = "libros")
 public class Libro {
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(unique = true)
     private String title;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "libro_autor",
+            joinColumns = @JoinColumn(name = "libro_id"),
+            inverseJoinColumns = @JoinColumn(name = "autor_id")
+    )
     private List<Autor> authors;
 
     @JsonAlias("download_count")
     private int downloadCount;
 
-    // Añadir el campo languages
+    @ElementCollection
     private List<String> languages;
 
     // Getters y Setters
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -52,7 +64,6 @@ public class Libro {
         this.downloadCount = downloadCount;
     }
 
-    // Getter y Setter para languages
     public List<String> getLanguages() {
         return languages;
     }
@@ -63,20 +74,18 @@ public class Libro {
 
     @Override
     public String toString() {
-        // Modificado para imprimir los detalles de los autores fuera de los corchetes
         StringBuilder authorsStr = new StringBuilder();
-        for (Autor autor : authors) {
-            authorsStr.append(autor.toString()).append(" ");  // Añadir detalles de autores
+        if (authors != null) {
+            for (Autor autor : authors) {
+                authorsStr.append(autor.toString()).append(" ");
+            }
         }
-
-        // Extraer el primer lenguaje
         String language = languages != null && !languages.isEmpty() ? languages.get(0) : "Desconocido";
-
         return "Libro - {" +
-                "Titulo='" + title + "\', " +
+                "Titulo='" + title + "', " +
                 "Idiomas=" + language + ", " +
                 authorsStr.toString() +
-                ", No.Descargas=" + downloadCount +
-                '}' + "\n";
+                "No.Descargas=" + downloadCount +
+                '}';
     }
 }
